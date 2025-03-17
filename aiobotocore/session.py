@@ -63,6 +63,14 @@ class AioSession(_SyncSession):
             self, region_name=self._last_client_region_used
         )
 
+    def _get_ignored_credentials(self, aws_session_token, aws_account_id):
+        credential_inputs = []
+        if aws_session_token:
+            credential_inputs.append('aws_session_token')
+        if aws_account_id:
+            credential_inputs.append('aws_account_id')
+        return ', '.join(credential_inputs) if credential_inputs else None
+
     def _register_smart_defaults_factory(self):
         def create_smart_defaults_factory():
             default_config_resolver = self._get_internal_component(
